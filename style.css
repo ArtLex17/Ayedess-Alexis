@@ -181,6 +181,62 @@ a:hover {
 }
 
 /* ============================================
+   CITATIONS
+   ============================================ */
+.citations-section {
+    margin-top: 2rem;
+    max-width: 600px;
+}
+
+.quotes-container {
+    margin-top: 1.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.quotes-container.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.quote-card {
+    background: white;
+    border-left: 4px solid var(--primary-color);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    animation: slideIn 0.5s ease forwards;
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.quote-card:nth-child(1) { animation-delay: 0.1s; }
+.quote-card:nth-child(2) { animation-delay: 0.2s; }
+.quote-card:nth-child(3) { animation-delay: 0.3s; }
+
+.quote-card i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.quote-card p {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
    HERO SECTION
    ============================================ */
 .hero {
@@ -619,6 +675,10 @@ a:hover {
         font-size: 1.25rem;
     }
     
+    .citations-section {
+        text-align: center;
+    }
+    
     .avatar-image {
         max-width: 280px;
     }
@@ -758,5 +818,10 @@ a:hover {
     p {
         font-size: 0.9375rem;
         line-height: 1.6;
+    }
+    
+    .quote-card {
+        padding: 1rem;
+        font-size: 0.9rem;
     }
 }
