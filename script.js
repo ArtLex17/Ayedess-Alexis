@@ -15,7 +15,7 @@ const citations = [
     "Le machine learning, c'est apprendre à un ordinateur à apprendre par lui-même.",
     "La data visualisation, c'est l'art de raconter des histoires avec des chiffres.",
     "L'autodidaxie est le chemin de la liberté intellectuelle.",
-    "Le scoutisme n'est pas seulement une activité, c'est une école de vie.",
+    "Le scoutisme n'est pas seulement un mouvement, c'est une école de vie.",
     "L'entrepreneuriat, c'est transformer ses idées en réalité, pas seulement en rêves.",
     "La culture ivoirienne est un trésor à valoriser et à partager.",
     "Le design graphique, c'est communiquer sans mots.",
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// GÉNÉRATEUR DE 3 CITATIONS
+// GÉNÉRATEUR DE 1 CITATION
 // ============================================
 
 function setupQuotesButton() {
@@ -50,42 +50,82 @@ function setupQuotesButton() {
     
     // État pour suivre si les citations sont affichées
     let isShowingQuotes = false;
+    let currentQuotes = [];
+    
+    // Citation initiale dans le bouton
+    const initialQuote = getRandomQuote();
+    generateBtn.setAttribute('data-initial-quote', initialQuote);
     
     generateBtn.addEventListener('click', () => {
         if (isShowingQuotes) {
             // Cacher les citations
-            quotesContainer.classList.remove('show');
-            setTimeout(() => {
-                quotesContainer.innerHTML = '';
-                generateBtn.innerHTML = '<i class="fas fa-quote-right"></i> Voir 3 citations inspirantes';
-                isShowingQuotes = false;
-                generateBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--primary-dark))';
-            }, 300);
+            hideQuotes();
         } else {
-            // Générer et afficher 3 citations aléatoires
-            const randomQuotes = getThreeRandomQuotes();
-            displayQuotes(randomQuotes);
-            quotesContainer.classList.add('show');
-            generateBtn.innerHTML = '<i class="fas fa-times"></i> Cacher les citations';
-            isShowingQuotes = true;
-            generateBtn.style.background = 'linear-gradient(135deg, #8b5cf6, #7c3aed)';
-            
-            // Animation du bouton
-            generateBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                generateBtn.style.transform = 'scale(1)';
-            }, 150);
+            // Générer et afficher 1 citation aléatoire
+            showQuotes();
         }
     });
+    
+    // Fonction pour cacher les citations
+    function hideQuotes() {
+        quotesContainer.classList.remove('show');
+        setTimeout(() => {
+            quotesContainer.innerHTML = '';
+            generateBtn.innerHTML = `
+                <i class="fas fa-envelope"></i>
+                Nouveau Message
+            `;
+            isShowingQuotes = false;
+            generateBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--primary-dark))';
+            generateBtn.classList.remove('active');
+        }, 300);
+    }
+    
+    // Fonction pour afficher les citations
+    function showQuotes() {
+        currentQuotes = getThreeRandomQuotes();
+        displayQuotes(currentQuotes);
+        quotesContainer.classList.add('show');
+        generateBtn.innerHTML = `
+            <i class="fas fa-times"></i>
+            Cacher le message (${currentQuotes.length} affiché)
+        `;
+        isShowingQuotes = true;
+        generateBtn.style.background = 'linear-gradient(135deg, #8b5cf6, #7c3aed)';
+        generateBtn.classList.add('active');
+        
+        // Animation du bouton
+        generateBtn.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            generateBtn.style.transform = 'scale(1)';
+        }, 150);
+        
+        // Scroll doux vers les citations sur mobile
+        if (window.innerWidth < 768) {
+            setTimeout(() => {
+                quotesContainer.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 500);
+        }
+    }
 }
 
+// Fonction pour obtenir une seule citation aléatoire
+function getRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * citations.length);
+    return citations[randomIndex];
+}
+
+// Fonction pour obtenir une citation aléatoire unique
 function getThreeRandomQuotes() {
     // Créer une copie du tableau de citations
     const availableQuotes = [...citations];
     const selectedQuotes = [];
     
-    // Sélectionner 3 citations aléatoires sans doublons
-    for (let i = 0; i < 3; i++) {
+    // Sélectionner une citation aléatoire sans doublon
+    for (let i = 0; i < 1; i++) {
         if (availableQuotes.length === 0) break;
         
         const randomIndex = Math.floor(Math.random() * availableQuotes.length);
@@ -98,6 +138,7 @@ function getThreeRandomQuotes() {
     return selectedQuotes;
 }
 
+// Fonction pour afficher les citations dans le conteneur
 function displayQuotes(quotes) {
     const quotesContainer = document.getElementById('quotesContainer');
     if (!quotesContainer) return;
@@ -111,7 +152,14 @@ function displayQuotes(quotes) {
         quoteCard.className = 'quote-card';
         quoteCard.style.animationDelay = `${index * 0.1}s`;
         quoteCard.innerHTML = `
-            <p><i class="fas fa-quote-left"></i> ${quote}</p>
+            <p>
+                <i class="fas fa-quote-left"></i> 
+                ${quote}
+                <i class="fas fa-quote-right" style="margin-left: 0.5rem;"></i>
+            </p>
+            <div class="quote-number" style="text-align: right; margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                
+            </div>
         `;
         quotesContainer.appendChild(quoteCard);
     });
@@ -469,4 +517,4 @@ window.App = {
 // Message de bienvenue dans la console
 console.log('%c🎨 Portfolio d\'Alexis KOUAKOU - Version Responsive', 'color: #2563eb; font-size: 14px; font-weight: bold;');
 console.log('%c📱 Optimisé pour mobile, tablette et desktop', 'color: #8b5cf6; font-size: 12px;');
-console.log('%c💡 Cliquez sur "Voir 3 citations inspirantes" pour découvrir des citations aléatoires!', 'color: #10b981; font-size: 12px;');
+console.log('%c💡 Cliquez sur "Nouveau message" pour découvrir 1 message inspirant!', 'color: #10b981; font-size: 12px;');
